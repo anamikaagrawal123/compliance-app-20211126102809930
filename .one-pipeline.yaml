@@ -96,5 +96,5 @@ owasp-zap:
       set -x
     fi
     
-    source scripts/zap/trigger_zap_scans
+    source scripts/trigger_zap_scans
 
