@@ -1,0 +1,10 @@
+#!/bin/bash
+#DATA represents the json definition as listed in swagger-definition-files 
+
+#write to file
+echo "${DATA}" > temp.json
+# do operations on the data in the file
+
+#read data back into the DATA param
+DATA=$(cat temp.json)
+echo "DATA ${DATA}"

@@ -94,6 +94,5 @@ owasp-zap-api:
       set -x
     fi
     
-    source scripts/zap/setup_api_scan.sh
-    source scripts/zap/run_api_scan.sh
+    source scripts/zap/trigger_zap_scans
 
