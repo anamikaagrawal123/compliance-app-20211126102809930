@@ -55,7 +55,7 @@
     set_env "zap-api-image" ""
 
     # FLAG FOR RUNNING API SCAN AS DIND default is false
-    # set_env "zap_dind" "true"
+    set_env "zap_dind" "true"
 
     # set the url of the app to scan
     # reading back the param that was exported in the dynamic-scan setup stage
