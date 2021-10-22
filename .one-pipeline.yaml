@@ -63,7 +63,7 @@ dynamic-scan:
     # can be triggered, and owasp will run
     export_env "app-url"
     source "${ONE_PIPELINE_PATH}"/tools/trigger-task
-    trigger-task "owasp-zap" "dynamic_scan"
+    # trigger-task "owasp-zap" "dynamic_scan"
 
 acceptance-test:
   abort_on_failure: false

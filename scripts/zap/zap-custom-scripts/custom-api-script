@@ -6,8 +6,7 @@
 # The following script modifies a swagger.json file to add the additionaly wrapper required by the zap scanner
 echo "running customisations"
 cp "${API_DATA_FILE}" "temp_data.json"
-ls one-pipeline-config-repo/scripts/zap/zap-custom-scripts/
-node one-pipeline-config-repo/scripts/zap-custom-scripts/zap/generate-definitions.js $(pwd)/"temp_data.json" > "${API_DATA_FILE}"
+node one-pipeline-config-repo/scripts/zap/zap-custom-scripts/generate-definitions.js $(pwd)/"temp_data.json" > "${API_DATA_FILE}"
 rm temp_data.json
 # cat "${API_DATA_FILE}"
 
