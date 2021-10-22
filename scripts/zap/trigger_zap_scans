@@ -22,7 +22,7 @@
     # Example common repo containing the core zap scripts
     # GIT_TOKEN="$(get_env git-token "")" where git-token is a pipeline param set in the UI
     # git clone "https://${GIT_TOKEN}@github.ibm.com/huayuenh/myzap_repo"
-    # set_env "zap-core-scripts" "myzap_repo/scripts/zap_core"
+    # set_env "zap-core-scripts" "myzap_repo/scripts/zap/zap_core"
 
 
     # ##SCAN SET UP FOR API AND UI##
@@ -45,7 +45,7 @@
     # SEE zap-core/setup for other optional params
 
     # SET THE CORE ZAP FILES DIRECTORY
-    set_env "zap-core-scripts" "one-pipeline-config-repo/scripts/zap_core"
+    set_env "zap-core-scripts" "one-pipeline-config-repo/scripts/zap/zap_core"
 
     # SET UP A RESULTS FILTER High, Medium, Low, Informational (Optional). Reommended to filter out Informational
     set_env "filter-options" "Informational"
@@ -68,10 +68,10 @@
     set_env "swagger-definition-files" "one-pipeline-config-repo/definitions/definitions1.json"
 
     # set an optional custom file to modify the swagger definition before it is sent to be scan
-    set_env "zap-api-custom-script" "one-pipeline-config-repo/scripts/zap-custom-scripts/custom-api-script"
+    set_env "zap-api-custom-script" "one-pipeline-config-repo/scripts/zap/zap-custom-scripts/custom-api-script"
 
     # start the scan
-    source one-pipeline-config-repo/scripts/zap_core/run_scan
+    source one-pipeline-config-repo/scripts/zap/zap_core/run_scan
 
     # SET UP ZAP UI SCAN 
     # set the zap ui images
@@ -87,14 +87,14 @@
     set_env "zap-ui-scan" "true"
 
     # set the path the directory containing the UI test scripts
-    set_env "zap-ui-script-directory" "one-pipeline-config-repo/scripts/zap-ui-test/uiscripts"
+    set_env "zap-ui-script-directory" "one-pipeline-config-repo/scripts/zap/zap-ui-test/uiscripts"
 
     # set the path to a context file if required
-    # set_env "context-file" "one-pipeline-config-repo/scripts/zap-ui-test/contextfile/custom-context.context"
+    # set_env "context-file" "one-pipeline-config-repo/scripts/zap/zap-ui-test/contextfile/custom-context.context"
 
     # set an optional custom file to run during the UI set up. See example
     # it might be a requirement to create a script container secrets for the UI tests to import
-    set_env "zap-ui-custom-script" "one-pipeline-config-repo/scripts/zap-custom-scripts/custom-ui-script"
+    set_env "zap-ui-custom-script" "one-pipeline-config-repo/scripts/zap/zap-custom-scripts/custom-ui-script"
 
     # start the scan
-    #source one-pipeline-config-repo/scripts/zap_core/run_scan
+    #source one-pipeline-config-repo/scripts/zap/zap_core/run_scan

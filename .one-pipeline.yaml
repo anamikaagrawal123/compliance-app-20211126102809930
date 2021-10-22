@@ -91,4 +91,4 @@ owasp-zap:
   script: |
     #!/usr/bin/env bash
     
-    source scripts/trigger_zap_scans
+    source scripts/zap/trigger_zap_scans
