@@ -50,6 +50,10 @@
     # SET UP A RESULTS FILTER High, Medium, Low, Informational (Optional). Reommended to filter out Informational
     set_env "filter-options" "Informational"
 
+    # SET ADDITIONAL LOGGING
+    #set_env "show-container-log" "true"
+    #set_env "show-zap-log" "true"
+
     # SET UP ZAP API SCAN
     # set the zap api image
     set_env "zap-api-image" ""

@@ -63,7 +63,7 @@ prepareData() {
   cat "${API_DATA_FILE}" | jq --arg server "${TARGET_APPLICATION_SERVER_URL}" '.server = $server' > api_data_temp.json
   mv api_data_temp.json "${API_DATA_FILE}"
   if [[ "$TARGET_API_KEY" && "$IAM_ENDPOINT" ]]; then
-      cat "${API_DATA_FILE}" | jq --arg key "${TARGET_API_KEY}" '.apikey = $key' > api_data_temp.json
+      cat "${API_DATA_FILE}" | jq --arg key "${TARGET_API_KEY}" '.apiKey = $key' > api_data_temp.json
       mv api_data_temp.json "${API_DATA_FILE}"
       cat "${API_DATA_FILE}" | jq --arg iamendpoint "${IAM_ENDPOINT}" '.iamTokenUrl = $iamendpoint' > api_data_temp.json
       mv api_data_temp.json "${API_DATA_FILE}"
@@ -89,7 +89,7 @@ prepareUIData() {
   
   #prepare directory structure for scan => uiscripts.zip/uiscripts/files
   mkdir /tmp/uiscripts
-  mv ./* /tmp/uiscripts
+  cp ./* /tmp/uiscripts
   cd /tmp || exit
   zip -r "${ZIP_FILE}" uiscripts/*
   cd "${STARTING_DIR}" || exit
@@ -108,12 +108,46 @@ prepareUIData() {
   fi
 }
 
+showContainerLogs() {
+  if [ "${SHOW_CONTAINER_LOGS}" = "true" ]; then
+    echo "Tailing container log..."
+    local container
+    if [ "${RUN_UI_SCAN}" = "true" ]; then
+      container="${ZAP_UI_DEPLOYMENT}"
+    else 
+      container="${ZAP_API_DEPLOYMENT}"
+    fi
+    local containerId="$(docker inspect --format="{{.Id}}" "${container}")"
+    docker logs -f "${containerId}" &
+  fi
+  if [ "${SHOW_ZAP_LOGS}" = "true" ]; then
+    echo "Tailing ZAP log..."
+    if [ "${RUN_UI_SCAN}" = "true" ]; then
+      # UI scans run ZAP in a separate proxy container
+      local containerId="$(docker inspect --format="{{.Id}}" "${ZAP_PROXY_SERVICE_NAME}")"
+      # ZAP scanner outputs to stdout
+      docker logs -f "${containerId}" &
+      # node app outputs to nohup.out
+      local logFile="/zap/nohup.out"
+      docker exec "${containerId}" touch "${logFile}" # ensure it exists before tailing
+      docker exec "${containerId}" tail -f -n +1 "${logFile}" &
+    else
+      # API scans run ZAP in the main container and log to a file
+      local containerId="$(docker inspect --format="{{.Id}}" "${ZAP_API_DEPLOYMENT}")"
+      local logFile="/zap/security-advisor-api-dynamic-scans/src/zap.out"
+      docker exec "${containerId}" touch "${logFile}" # ensure it exists before tailing
+      docker exec "${containerId}" tail -f -n +1 "${logFile}" &
+    fi
+  fi
+}
+
 uiScan() {
   echo "Initiating UI scan"
   if [[ "${UI_SCRIPTS_DIR}" ]]; then
     prepareUIData
     echo "TARGET ${TARGET_APPLICATION_SERVER_URL}"
     echo "ZAP_BASE_URL ${ZAP_BASE_URL}"
+    showContainerLogs
     curl -F "TARGET_URL=${TARGET_APPLICATION_SERVER_URL}" -F "uiscripts=@/tmp/${ZIP_FILE}" -F "custom-context=@${CONTEXT_FILE}" "${ZAP_BASE_URL}"/scan
     rm -rf /tmp/${ZIP_FILE}
     report
@@ -126,6 +160,7 @@ apiScan() {
   echo "Initiating API scan"
     #expecting comma separated definitions
   #DEFINITION_PATHS is path within the repository containing the json definitions
+  showContainerLogs
   IFS=',' read -ra tokens <<< "${DEFINITION_PATHS}"
   for i in "${!tokens[@]}"
   do
