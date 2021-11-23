@@ -77,6 +77,11 @@ ZAP_UI_DEPLOYMENT="$(get_env zap_ui_deployment_name "zap-ui-deployment")"
 ZAP_PROXY_SERVICE_NAME="$(get_env zap-proxy-service "zap-proxy-service")"
 ZAP_CLUSTER_NAMESPACE="$(get_env zap-namespace "zap")"
 POLLING_INTERVAL="$(get_env zap-polling-interval "120s")"
+
+# Addition logging
+SHOW_CONTAINER_LOGS="$(get_env show-container-log "false")"
+SHOW_ZAP_LOGS="$(get_env show-zap-log "false")"
+
 # Images and params for setting up pull secrets. 
 # Looking to get these pushed to ICR to remove the self hosting dependency and need for pull secrets
 ZAP_UI_IMAGE="$(get_env zap-ui-image "")"
