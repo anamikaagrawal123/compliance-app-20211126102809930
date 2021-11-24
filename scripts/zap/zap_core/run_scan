@@ -13,11 +13,7 @@ source "${ZAP_SCRIPTS_DIR}"/setup
 source "${ZAP_SCRIPTS_DIR}"/zap_support
 
 export REPORTFILE
-if [ "${RUN_UI_SCAN}" = "true" ]; then
-  REPORTFILE="owasp-zap-ui_result"
-else 
-  REPORTFILE="owasp-zap_result"
-fi
+REPORTFILE="owasp-zap_result"
 
 #check the status of the zap scan and poll until results are available
 report() {
