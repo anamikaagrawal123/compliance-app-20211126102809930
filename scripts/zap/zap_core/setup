@@ -66,7 +66,6 @@ FILTER_OPTIONS="$(get_env filter-options "")"
 RUN_UI_SCAN="$(get_env zap-ui-scan "false")"
 
 # Flag to switch between deploying zap to a cluster or running DinD
-# DinD not ready yet
 RUN_INLINE="$(get_env zap_dind "true")"
 
 # DEFAULTS for Kube cluster deploy
@@ -78,6 +77,9 @@ ZAP_PROXY_SERVICE_NAME="$(get_env zap-proxy-service "zap-proxy-service")"
 ZAP_CLUSTER_NAMESPACE="$(get_env zap-namespace "zap")"
 POLLING_INTERVAL="$(get_env zap-polling-interval "120s")"
 
+# Defaults for evidence gathering
+ZAP_EVIDENCE_TYPE="$(get_env zap_evidence_type "com.ibm.dynamic_scan")"
+ZAP_STATUS_TYPE="$(get_env zap_status_type "failure")"
 # Addition logging
 SHOW_CONTAINER_LOGS="$(get_env show-container-log "false")"
 SHOW_ZAP_LOGS="$(get_env show-zap-log "false")"
